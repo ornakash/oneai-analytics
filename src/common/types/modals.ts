@@ -44,6 +44,7 @@ export interface Phrase {
   item_translated_text?: string | null;
   trends: Trend[];
   properties: Properties;
+  metadata_stats: UniqueItemsStats;
 }
 
 export interface Cluster {
@@ -57,6 +58,7 @@ export interface Cluster {
   item_translated_text?: string | null;
   trends: Trend[];
   properties: Properties;
+  metadata_stats: UniqueItemsStats;
 }
 
 export interface MetaCluster {
@@ -71,4 +73,12 @@ export interface MetaCluster {
   metadata: MetaData;
   trends: Trend[];
   properties: Properties;
+}
+
+export interface UniqueItemsStats {
+  unique_values_count: {
+    meta_key: string;
+    unique_values_count: number;
+  }[];
+  overall_unique_keys_count: number;
 }

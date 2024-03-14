@@ -112,7 +112,7 @@ export function getNumberDescription(numIn: number): string {
       result = Math.round((result * decPlaces) / size) / decPlaces;
 
       // Handle special case where we round up to the next abbreviation
-      if (result == 1000 && i < abbrev.length - 1) {
+      if (result === 1000 && i < abbrev.length - 1) {
         result = 1;
         i++;
       }
@@ -137,3 +137,50 @@ export const objectToLowerCase = <T>(obj: Record<string, T>) => {
     })
   );
 };
+
+export const skillsArray = [
+  'sentence',
+  'entity',
+  'enhance',
+  'highlight',
+  'keyword',
+  'summarize',
+  'emotion',
+  'article-topic',
+  'sentiment',
+  'extract-html',
+  'html-extract-text',
+  'html-extract-article',
+  'anonymize',
+  'embedding',
+  'clustering',
+  'action-item',
+  'business-entity',
+  'sales-insight',
+  'dialogue-segmentation',
+  'name',
+  'number',
+  'find',
+  'transcribe',
+  'translate',
+  'detect-language',
+  'debug',
+  'headline',
+  'subheading',
+  'skill-discovery',
+  'whisper-transcription',
+  'service-email-insight',
+  'pdf-extract-text',
+  'custom',
+  'fact-check',
+  'gpt',
+  'classify',
+  'collection-search',
+  'coda-query-classifier',
+  'social-toxicity',
+  'content-curation',
+  'subsentence',
+  'bizgpt',
+  'files-extract-text',
+  'query-rewriter',
+];

@@ -3,7 +3,7 @@ import {
   CountersConfigurations,
   CounterType,
 } from '../types/customizeBarTypes';
-import { MetaData, Trend } from '../types/modals';
+import { MetaData, Trend, UniqueItemsStats } from '../types/modals';
 import CounterDisplay from './CountersLabels/CounterDisplay';
 import MaxLabelDisplay from './CountersLabels/MaxLabelDisplay';
 
@@ -19,6 +19,10 @@ export default function CountersLabelsDisplay({
   labelWidth,
   labelMaxWidth,
   totalItems,
+  totalUniqueItemsStats,
+  uniqueItemsStats,
+  uniquePropertyName,
+  signalsEnabled,
 }: {
   counters: CounterType[];
   labels: string[];
@@ -31,6 +35,10 @@ export default function CountersLabelsDisplay({
   counterMaxWidth?: string;
   labelWidth?: string;
   labelMaxWidth?: string;
+  totalUniqueItemsStats?: UniqueItemsStats;
+  uniqueItemsStats?: UniqueItemsStats;
+  uniquePropertyName?: string;
+  signalsEnabled?: boolean;
 }) {
   return (
     <span className="truncate flex items-center">
@@ -46,6 +54,10 @@ export default function CountersLabelsDisplay({
               width={counterWidth}
               maxWidth={counterMaxWidth}
               totalItems={totalItems}
+              totalUniqueItemsStats={totalUniqueItemsStats}
+              uniqueItemsStats={uniqueItemsStats}
+              uniquePropertyName={uniquePropertyName}
+              signalsEnabled={signalsEnabled}
             />
           </div>
         ))}

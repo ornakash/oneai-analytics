@@ -5,7 +5,7 @@ import {
   GroupMembers,
   MetadataKeyValue,
 } from '../types/customizeBarTypes';
-import { MetaData, Trend } from '../types/modals';
+import { MetaData, Trend, UniqueItemsStats } from '../types/modals';
 import {
   objectToLowerCase,
   percentageIncrease,
@@ -319,6 +319,110 @@ export function trendCalculation(
   return {
     result: trend,
     counter: itemCounter ?? keyCounter,
+    metadataKey: metadataKeyValue.key,
+    value: metadataKeyValue.value,
+  };
+}
+
+export function percentOfAllUniqueItemsCalculation(
+  metadataKeyValue: MetadataKeyValue | null,
+  metadata: MetaData,
+  trend: Trend[],
+  countersConfigurations: CountersConfigurations,
+  totalItems: number,
+  totalUniqueItemsStats?: UniqueItemsStats,
+  _?: UniqueItemsStats,
+  uniquePropertyName?: string
+) {
+  if (!uniquePropertyName)
+    return percentOfAllItemsCalculation(
+      metadataKeyValue,
+      metadata,
+      trend,
+      countersConfigurations,
+      totalItems
+    );
+
+  if (!metadataKeyValue || !totalUniqueItemsStats || !uniquePropertyName)
+    return { counter: null, result: 0 };
+  const itemCounter = getMetadataKeyValueConfiguration(
+    metadataKeyValue,
+    countersConfigurations
+  );
+
+  if (!itemCounter) return { counter: null, result: 0 };
+
+  const itemCount = calculateSumItemsInMetadata(
+    itemCounter.members,
+    itemCounter.items,
+    metadata
+  );
+
+  const keyCount =
+    totalUniqueItemsStats.unique_values_count.find(
+      (uv) => uv.meta_key === uniquePropertyName
+    )?.unique_values_count ?? 0;
+
+  const result = keyCount === 0 ? 0 : (itemCount / keyCount) * 100;
+
+  return {
+    result: result,
+    counter: itemCounter,
+    metadataKey: metadataKeyValue.key,
+    value: metadataKeyValue.value,
+  };
+}
+
+export function totalUniqueItemsCalculation(
+  metadataKeyValue: MetadataKeyValue | null,
+  metadata: MetaData,
+  trend: Trend[],
+  countersConfigurations: CountersConfigurations,
+  totalItems: number,
+  _?: UniqueItemsStats,
+  uniqueItemsStats?: UniqueItemsStats,
+  uniquePropertyName?: string
+) {
+  if (!uniquePropertyName)
+    return totalSumCalculation(
+      metadataKeyValue,
+      metadata,
+      trend,
+      countersConfigurations,
+      totalItems
+    );
+
+  if (!metadataKeyValue || !uniqueItemsStats)
+    return { counter: null, result: 0 };
+
+  let itemCounter;
+
+  if (metadataKeyValue.key === CUSTOM_METADATA_KEY) {
+    itemCounter = getMetadataKeyValueConfiguration(
+      { key: uniquePropertyName },
+      countersConfigurations
+    );
+  } else {
+    itemCounter = getMetadataKeyValueConfiguration(
+      metadataKeyValue,
+      countersConfigurations
+    );
+  }
+
+  if (!itemCounter) return { counter: null, result: 0 };
+
+  const keyCount =
+    uniqueItemsStats.unique_values_count.find(
+      (uv) =>
+        uv.meta_key ===
+        (metadataKeyValue.key === CUSTOM_METADATA_KEY
+          ? uniquePropertyName
+          : metadataKeyValue.key)
+    )?.unique_values_count ?? 0;
+
+  return {
+    result: keyCount,
+    counter: itemCounter,
     metadataKey: metadataKeyValue.key,
     value: metadataKeyValue.value,
   };

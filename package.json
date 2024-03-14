@@ -1,5 +1,5 @@
 {
-  "version": "0.2.298",
+  "version": "0.2.305",
   "license": "MIT",
   "main": "dist/index",
   "module": "dist/oneai-analytics.esm",
@@ -36,8 +36,8 @@
     "prepare": "dts build",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "sb": "storybook dev -p 6006",
-    "dev": "storybook dev -p 6006",
+    "sb": "storybook dev -p 6006 --no-open",
+    "dev": "storybook dev -p 6006 --no-open",
     "build-storybook": "NODE_OPTIONS=--openssl-legacy-provider storybook build -o docs-build"
   },
   "peerDependencies": {
@@ -105,7 +105,7 @@
     "size-limit": "^8.2.4",
     "storybook": "^7.0.11",
     "tailwind-scrollbar": "^3.0.2",
-    "tailwindcss": "^3.3.2",
+    "tailwindcss": "^3.4.1",
     "ts-jest": "^29.1.0",
     "tslib": "^2.5.0",
     "typescript": "^5.0.4"
@@ -117,6 +117,7 @@
     "core-js": "^3.30.2",
     "d3": "7.8.4",
     "date-fns": "^2.30.0",
+    "lottie-web": "^5.12.2",
     "moment": "^2.29.4",
     "react-app-polyfill": "^3.0.0",
     "react-focus-on": "^3.8.1",

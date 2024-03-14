@@ -1,21 +1,25 @@
-import { CountersConfigurations } from '../types/customizeBarTypes';
 import {
+  FilmIcon,
+  GlobeAmericasIcon,
+  HashtagIcon,
+} from '@heroicons/react/20/solid';
+import {
+  BuildingOffice2Icon,
+  CalendarIcon,
   FaceFrownIcon,
   FaceSmileIcon,
-  UserIcon,
+  GlobeAltIcon,
   HandThumbDownIcon,
   HandThumbUpIcon,
-  GlobeAltIcon,
-  BuildingOffice2Icon,
-  MapPinIcon,
-  UsersIcon,
-  ScaleIcon,
-  CalendarIcon,
   HeartIcon,
   KeyIcon,
+  MapPinIcon,
+  ScaleIcon,
+  UserIcon,
+  UsersIcon,
 } from '@heroicons/react/24/outline';
 import React from 'react';
-import { FilmIcon, HashtagIcon } from '@heroicons/react/20/solid';
+import { CountersConfigurations } from '../types/customizeBarTypes';
 
 export const defaultCountersConfigurations: CountersConfigurations = {
   signals: {
@@ -254,5 +258,11 @@ export const defaultCountersConfigurations: CountersConfigurations = {
         isGroup: true,
       },
     ],
+  },
+  city: {
+    display: {
+      color: 'white',
+      icon: <GlobeAmericasIcon />,
+    },
   },
 };

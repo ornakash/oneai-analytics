@@ -1,4 +1,9 @@
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
+import {
+  CounterType,
+  CountersConfigurations,
+  MetadataKeyValue,
+} from './customizeBarTypes';
 import {
   Cluster,
   Item,
@@ -7,12 +12,13 @@ import {
   Phrase,
   Properties,
   Trend,
+  UniqueItemsStats,
 } from './modals';
-import {
-  CountersConfigurations,
-  CounterType,
-  MetadataKeyValue,
-} from './customizeBarTypes';
+
+export interface OneAiLoaderProps {
+  height?: string;
+  width?: string;
+}
 
 export interface DataNode {
   id: string;
@@ -24,6 +30,7 @@ export interface DataNode {
   properties: { [key: string]: string };
   trends: Trend[];
   type: string;
+  metadata_stats?: UniqueItemsStats;
 }
 
 export interface TreemapProps {
@@ -47,6 +54,11 @@ export interface TreemapProps {
   nodeActionsClicked: (node: DataNode) => void;
   translate: boolean;
   totalItems: number;
+  totalUniqueItemsStats?: UniqueItemsStats;
+  uniquePropertyName?: string;
+  itemPercentageEnabled?: boolean;
+  mergeMenuEnabled?: boolean;
+  signalsEnabled?: boolean;
 }
 
 export interface BarChartProps {
@@ -66,6 +78,8 @@ export interface BarChartProps {
   nodeActionsClicked: (node: DataNode) => void;
   translate: boolean;
   totalItems: number;
+  totalUniqueItemsStats?: UniqueItemsStats;
+  uniquePropertyName?: string;
 }
 
 export type NodeType = 'Cluster' | 'Phrase' | 'Item' | 'Meta';
@@ -74,15 +88,7 @@ export interface OneAIDataNode {
   data: Cluster | Phrase | Item | MetaCluster;
 }
 
-export interface OneAiAnalyticsProps {
-  dataNodes: { totalItems: number; nodes: OneAIDataNode[] };
-  currentNode?: OneAIDataNode;
-  totalPagesAmount?: number;
-  currentPage?: number;
-  nodeClicked?: (node: Omit<OneAIDataNode & { id: string }, 'data'>) => void;
-  goBackClicked?: (skip: number) => void;
-  nextPageClicked?: () => void;
-  prevPageClicked?: () => void;
+export interface OneAIUserInput {
   darkMode?: boolean;
   background?: string;
   treemapBigColor?: string;
@@ -94,12 +100,44 @@ export interface OneAiAnalyticsProps {
   treemapBorderColor?: string;
   navbarColor?: string;
   barColor?: string;
+  translationEnabled?: boolean;
+  customizeEnabled?: boolean;
+  filterOnlySkills?: boolean;
+  datePickerEnabled?: boolean;
+  startDate?: string | undefined;
+  endDate?: string | undefined;
+  uniqueMetaKey?: string;
+  headerEnabled?: boolean;
+  breadCrumbsEnabled?: boolean;
+  itemPercentageEnabled?: boolean;
+  mergeMenuEnabled?: boolean;
+  headerFiltersEnabled?: boolean;
+  signalsEnabled?: boolean;
+  navigationDropDownEnabled?: boolean;
+  tooltipOffsetLeft?: number;
+  tooltipOffsetTop?: number;
+}
+
+export interface OneAiAnalyticsProps extends OneAIUserInput {
+  dataNodes: {
+    totalItems: number;
+    uniqueItemsStats?: UniqueItemsStats;
+    nodes: OneAIDataNode[];
+  };
+  currentNode?: OneAIDataNode;
+  totalPagesAmount?: number;
+  currentPage?: number;
+  nodeClicked?: (node: Omit<OneAIDataNode & { id: string }, 'data'>) => void;
+  goBackClicked?: (skip: number) => void;
+  nextPageClicked?: () => void;
+  prevPageClicked?: () => void;
   itemsDisplay?: FC<ItemsDisplayComponentProps>;
   loading?: boolean;
   error?: string | null;
   nodesPath?: { text: string; translated?: string | null }[];
   dateRangeChanged?: (from: Date | null, to: Date | null) => void;
   labelsFilters?: MetadataKeyValue[];
+  setLabelsFilters?: Dispatch<SetStateAction<MetadataKeyValue[]>>;
   labelClicked?: (key: string, value: string) => void;
   labelFilterDeleted?: (index: number) => void;
   trendPeriods?: number;
@@ -119,7 +157,6 @@ export interface OneAiAnalyticsProps {
     destination: string,
     controller: AbortController
   ) => Promise<{ status: 'Success' | 'error'; message: string }>;
-  translationEnabled?: boolean;
   toggleHide?: (
     node: {
       type: NodeType;
@@ -138,20 +175,17 @@ export interface OneAiAnalyticsProps {
 }
 
 export type OneAIAnalyticsStaticDataWrapperProps = Omit<
-  OneAiAnalyticsProps & { exampleNodes: ExampleNode[]; collection?: string },
+  OneAIUserInput & { exampleNodes: ExampleNode[]; collection?: string },
   'dataNodes' | 'totalPagesAmount' | 'currentPage'
 >;
 
-export type OneAIAnalyticsApiWrapperProps = Omit<
-  OneAiAnalyticsProps & {
-    domain?: string;
-    apiKey?: string;
-    collection?: string;
-    collectionName?: string;
-    refreshToken?: string;
-  },
-  'dataNodes' | 'totalPagesAmount' | 'currentPage'
->;
+export type OneAIAnalyticsApiWrapperProps = {
+  domain?: string | 'prod' | 'staging';
+  apiKey?: string;
+  collection?: string;
+  collectionDisplayName?: string;
+  refreshToken?: string;
+} & OneAIUserInput;
 
 export interface ExampleNode {
   type: NodeType;

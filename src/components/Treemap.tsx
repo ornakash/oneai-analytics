@@ -36,6 +36,11 @@ export const Treemap: FC<TreemapProps> = ({
   nodeActionsClicked,
   translate,
   totalItems,
+  totalUniqueItemsStats,
+  uniquePropertyName,
+  itemPercentageEnabled,
+  mergeMenuEnabled,
+  signalsEnabled,
 }) => {
   const mainNode: TreemapNode = useMemo(() => {
     return {
@@ -116,7 +121,10 @@ export const Treemap: FC<TreemapProps> = ({
       leaf.data.metadata,
       leaf.data.trends,
       countersConfiguration,
-      totalItems
+      totalItems,
+      totalUniqueItemsStats,
+      leaf.data.metadata_stats,
+      uniquePropertyName
     );
 
     return (
@@ -154,22 +162,28 @@ export const Treemap: FC<TreemapProps> = ({
                 borderColor: borderColor,
               }}
             >
-              <div
-                className="flex"
-                style={{
-                  fontSize: `${countFontSize}px`,
-                }}
-              >
-                <CountersLabelsDisplay
-                  counters={counters}
-                  labels={labels}
-                  metadata={leaf.data.metadata}
-                  trends={leaf.data.trends}
-                  countersConfiguration={countersConfiguration}
-                  labelClicked={labelClicked}
-                  totalItems={totalItems}
-                />
-              </div>
+              {itemPercentageEnabled ? (
+                <div
+                  className="flex"
+                  style={{
+                    fontSize: `${countFontSize}px`,
+                  }}
+                >
+                  <CountersLabelsDisplay
+                    counters={counters}
+                    labels={labels}
+                    metadata={leaf.data.metadata}
+                    trends={leaf.data.trends}
+                    countersConfiguration={countersConfiguration}
+                    labelClicked={labelClicked}
+                    totalItems={totalItems}
+                    totalUniqueItemsStats={totalUniqueItemsStats}
+                    uniquePropertyName={uniquePropertyName}
+                    uniqueItemsStats={leaf.data.metadata_stats}
+                    signalsEnabled={signalsEnabled}
+                  />
+                </div>
+              ) : null}
               <span
                 className="items-center flex justify-center h-full hover:cursor-pointer"
                 onClick={() => nodeClicked(leaf.data)}
@@ -198,16 +212,18 @@ export const Treemap: FC<TreemapProps> = ({
                     : leaf.data.item_original_text}
                 </span>
               </span>
-              <div
-                data-for="global-actions"
-                data-tip
-                data-event="click"
-                className={`self-end hover:cursor-pointer hover:text-white ${
-                  actionsVisible === index ? 'visible' : 'invisible'
-                }`}
-              >
-                <EllipsisHorizontalIcon className="h-4 w-4" />
-              </div>
+              {mergeMenuEnabled ? (
+                <div
+                  data-for="global-actions"
+                  data-tip
+                  data-event="click"
+                  className={`self-end hover:cursor-pointer hover:text-white ${
+                    actionsVisible === index ? 'visible' : 'invisible'
+                  }`}
+                >
+                  <EllipsisHorizontalIcon className="h-4 w-4" />
+                </div>
+              ) : null}
             </div>
           </div>
         </foreignObject>
